@@ -16,7 +16,7 @@ client.on('connect', function() {
 });
 
 
-amqp.connect('amqp://172.17.0.3', function(err, conn) {
+amqp.connect('amqp://54.183.8.230', function(err, conn) {
   conn.createChannel(function(err, ch) {
   var q = 'shortner';
 
@@ -31,7 +31,7 @@ amqp.connect('amqp://172.17.0.3', function(err, conn) {
 });
 
 var connection = mysql.createConnection({
-  host     : '172.17.0.2',
+  host     : '54.183.8.230',
   user     : 'root',
   password : 'cmpe281',
   database : 'urlshortener'
@@ -62,7 +62,7 @@ client.get(shortUrl, function(err, reply) {
  });
   
 
-  MongoClient.connect("mongodb://localhost:27017/stats", function(err, db) {
+  MongoClient.connect("mongodb://admin:admin@281-hackathon-shard-00-00-i3eln.mongodb.net:27017,281-hackathon-shard-00-01-i3eln.mongodb.net:27017,281-hackathon-shard-00-02-i3eln.mongodb.net:27017/test?ssl=true&replicaSet=281-hackathon-shard-0&authSource=admin/stats", function(err, db) {
   if(err) { return console.dir(err); }
   console.log("Updating STATS!!")
   var id = Date.now();
@@ -104,7 +104,7 @@ function validateUrl(url){
 
 app.get('/hits/:keys', function(req, res) {
   console.log("Get hits"+req.params.keys);
-    MongoClient.connect("mongodb://localhost:27017/stats", function(err, db) {
+    MongoClient.connect("mongodb://admin:admin@281-hackathon-shard-00-00-i3eln.mongodb.net:27017,281-hackathon-shard-00-01-i3eln.mongodb.net:27017,281-hackathon-shard-00-02-i3eln.mongodb.net:27017/test?ssl=true&replicaSet=281-hackathon-shard-0&authSource=admin/stats", function(err, db) {
     var collection = db.collection('webstats_hits');
     collection.findOne({key:req.params.keys},{},function(e,docs){
            res.send(docs);
@@ -119,7 +119,7 @@ app.get('/sources', function(req, res) {
   var keys = req.query.keys;
     console.log("Get source hits:"+keys+" "+sources);
 
-    MongoClient.connect("mongodb://localhost:27017/stats", function(err, db) {
+    MongoClient.connect("mongodb://admin:admin@281-hackathon-shard-00-00-i3eln.mongodb.net:27017,281-hackathon-shard-00-01-i3eln.mongodb.net:27017,281-hackathon-shard-00-02-i3eln.mongodb.net:27017/test?ssl=true&replicaSet=281-hackathon-shard-0&authSource=admin/stats", function(err, db) {
     if(err){
       console.log("error is"+err);
     }
@@ -144,7 +144,7 @@ app.get('/locations', function(req, res) {
   var keys = req.query.keys;
     console.log("Get source hits:"+keys+" "+location);
 
-  MongoClient.connect("mongodb://localhost:27017/stats", function(err, db) {
+  MongoClient.connect("mongodb://admin:admin@281-hackathon-shard-00-00-i3eln.mongodb.net:27017,281-hackathon-shard-00-01-i3eln.mongodb.net:27017,281-hackathon-shard-00-02-i3eln.mongodb.net:27017/test?ssl=true&replicaSet=281-hackathon-shard-0&authSource=admin/stats", function(err, db) {
     if(err){
       console.log("error is"+err);
     }

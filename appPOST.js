@@ -11,7 +11,7 @@ var amqp = require('amqplib/callback_api');
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 var mysql      = require('mysql');
 var connection = mysql.createConnection({
-  host     : '172.17.0.2',
+  host     : '54.183.8.230',
   user     : 'root',
   password : 'cmpe281',
   database : 'urlshortener'
@@ -47,7 +47,7 @@ var query = connection.query('INSERT IGNORE INTO urlinfo SET ?',dataToPersisit, 
   }
 });
 console.log(query.sql);
-amqp.connect('amqp://172.17.0.3', function(err, conn) {
+amqp.connect('amqp://54.183.8.230', function(err, conn) {
   conn.createChannel(function(err, ch) {
     var q = 'shortner';
 
