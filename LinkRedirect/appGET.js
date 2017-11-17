@@ -3,7 +3,7 @@ var app = express();
 var bodyParser = require('body-parser');
 app.use(express.static('public'));
 var redis = require('redis');
-var client = redis.createClient(6379, "172.17.0.1");
+var client = redis.createClient(6379, "localhost");
 var amqp = require('amqplib/callback_api');
 var MongoClient = require('mongodb').MongoClient;
 
@@ -62,7 +62,7 @@ console.log("lets check"+shortUrl);
      });
   
 
-  MongoClient.connect("mongodb://admin:admin@281-hackathon-shard-00-00-i3eln.mongodb.net:27017,281-hackathon-shard-00-01-i3eln.mongodb.net:27017,281-hackathon-shard-00-02-i3eln.mongodb.net:27017/test?ssl=true&replicaSet=281-hackathon-shard-0&authSource=admin/stats", function(err, db) {
+  MongoClient.connect("mongodb://admin:admin@281-hackathon-shard-00-00-i3eln.mongodb.net:27017,281-hackathon-shard-00-01-i3eln.mongodb.net:27017,281-hackathon-shard-00-02-i3eln.mongodb.net:27017/stats?ssl=true&replicaSet=281-hackathon-shard-0&authSource=admin", function(err, db) {
   if(err) { return console.dir(err); }
   console.log("Updating STATS!!")
   connection.query("SELECT websitename from urlinfo where shorturl='"+shortUrl+"'", function(err, rows, fields) {
