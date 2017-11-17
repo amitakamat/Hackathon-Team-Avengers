@@ -1,0 +1,32 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+
+<body>
+
+<div class="jumbotron text-center">
+  <div class="container">
+    <a href="/">
+      <img src="/logo.png">
+    </a>
+    <p>This is a urlShortener application deployed to Heroku. It's a reasonably simple app - which creates the unique short URL from the given long URL and redirects to it. Also It gives the statistics of the URLs.</p>
+    <form class="navbar-form navbar-center" action="/shortenURL" method="post">
+      <div class="form-group">
+        <input type="text" name="originalUrl" class="form-control" placeholder="URL to shorten...">
+      </div>
+      <button type="submit" class="btn btn-default">Shorten!!</button>
+    </form>
+    <div id="success" class="alert alert-success" 
+      <%if (data.noSuccess == 1) { %>
+        hidden
+      <% } else{ %>      
+        <span>Successfully created the shortlink!!! </span><a href="<%= data.tmp %>"><span><b><%= data.tmp %></b></span></a>
+      <% } %>
+    </div>
+    <a type="button" class="btn btn-lg btn-primary" href="/"> View the Statistics</a>
+  </div>
+</div>
+</body>
+</html>
