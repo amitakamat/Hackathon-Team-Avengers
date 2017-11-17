@@ -62,7 +62,7 @@ console.log("lets check"+shortUrl);
      });
   
 
-  MongoClient.connect("mongodb://admin:admin@281-hackathon-shard-00-00-i3eln.mongodb.net:27017,281-hackathon-shard-00-01-i3eln.mongodb.net:27017,281-hackathon-shard-00-02-i3eln.mongodb.net:27017/test?ssl=true&replicaSet=281-hackathon-shard-0&authSource=admin/stats", function(err, db) {
+  MongoClient.connect("mongodb://admin:admin@281-hackathon-shard-00-00-i3eln.mongodb.net:27017,281-hackathon-shard-00-01-i3eln.mongodb.net:27017,281-hackathon-shard-00-02-i3eln.mongodb.net:27017/stats?ssl=true&replicaSet=281-hackathon-shard-0&authSource=admin", function(err, db) {
   if(err) { return console.dir(err); }
   console.log("Updating STATS!!")
   connection.query("SELECT websitename from urlinfo where shorturl='"+shortUrl+"'", function(err, rows, fields) {
