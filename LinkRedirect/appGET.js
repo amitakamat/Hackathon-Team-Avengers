@@ -3,7 +3,7 @@ var app = express();
 var bodyParser = require('body-parser');
 app.use(express.static('public'));
 var redis = require('redis');
-var client = redis.createClient(6379, "localhost");
+var client = redis.createClient(6379, "172.17.0.1");
 var amqp = require('amqplib/callback_api');
 var MongoClient = require('mongodb').MongoClient;
 
