@@ -11,9 +11,9 @@ var amqp = require('amqplib/callback_api');
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 var mysql      = require('mysql');
 var connection = mysql.createConnection({
-  host     : '172.17.0.2',
+  host     : 'localhost',
   user     : 'root',
-  password : 'cmpe281',
+  password : 'temp1234',
   database : 'urlshortener'
 });
 
@@ -36,7 +36,14 @@ function shortner(url){
 
 console.log("Short url: " + tmp);
 urlMap[url] = tmp;
-var dataToPersisit = {websitename:'Default',originalurl:url,shorturl:tmp};
+
+const { URL } = require('url');
+const URL_parser = new URL(url);
+
+console.log("Domain name : "+URL_parser.hostname)
+
+var dataToPersisit = {websitename:URL_parser.hostname,originalurl:url,shorturl:tmp};
+
 var query = connection.query('INSERT IGNORE INTO urlinfo SET ?',dataToPersisit, function(err, result) {
 
   if (!err)
@@ -47,7 +54,7 @@ var query = connection.query('INSERT IGNORE INTO urlinfo SET ?',dataToPersisit, 
   }
 });
 console.log(query.sql);
-amqp.connect('amqp://172.17.0.3', function(err, conn) {
+amqp.connect('amqp://localhost', function(err, conn) {
   conn.createChannel(function(err, ch) {
     var q = 'shortner';
 

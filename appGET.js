@@ -16,7 +16,7 @@ client.on('connect', function() {
 });
 
 
-amqp.connect('amqp://172.17.0.3', function(err, conn) {
+amqp.connect('amqp://localhost', function(err, conn) {
   conn.createChannel(function(err, ch) {
   var q = 'shortner';
 
@@ -31,9 +31,9 @@ amqp.connect('amqp://172.17.0.3', function(err, conn) {
 });
 
 var connection = mysql.createConnection({
-  host     : '172.17.0.2',
+  host     : 'localhost',
   user     : 'root',
-  password : 'cmpe281',
+  password : 'temp1234',
   database : 'urlshortener'
 });
 
@@ -41,7 +41,7 @@ connection.connect();
 
 function expand(shortUrl){
 console.log("lets check"+shortUrl);
-client.get(shortUrl, function(err, reply) {
+    client.get(shortUrl, function(err, reply) {
     console.log("The expanded url is "+reply);
     expandedUrl = reply;
 
@@ -58,36 +58,29 @@ client.get(shortUrl, function(err, reply) {
         console.log('Error while performing Query.'+err);
       }
       });
-    }
- });
+      }
+     });
   
-
-  MongoClient.connect("mongodb://localhost:27017/stats", function(err, db) {
+ MongoClient.connect("mongodb://localhost:27017/stats", function(err, db) {
   if(err) { return console.dir(err); }
   console.log("Updating STATS!!")
-  var id = Date.now();
-  var source,location;
-  if(id%3==0){
-    source = 'www.facebook.com';
-    location ='Germany';
-  }
-  else if(id%3==1){
-    source = 'www.twitter.com' ;
-    location ='USA';
-  }
-  else{
-    source = 'www.quora.com';
-    location ='Canada';
-  }
+  connection.query("SELECT websitename from urlinfo where shorturl='"+shortUrl+"'", function(err, rows, fields) {
+  if (!err && rows.length!=0){
+  console.log('The solution is: ', rows[0]);
+  var domain_name = rows[0].websitename;
+  console.log("domain name is : "+domain_name);
   var collection_hits = db.collection('webstats_hits');
-  var collection_source = db.collection('webstats_source');
-  var colection_location = db.collection('webstats_location');
+  var collection_domain = db.collection('webstats_domain');
 
   collection_hits.update({'key':shortUrl}, {'$inc':{hits:1}},{'upsert':true});
-  collection_source.insertOne({'source':source,'key':shortUrl});
-  colection_location.insertOne({'location':location,'key':shortUrl});
-console.log("Updated STATS!!")
-});
+    
+  collection_domain.update({'domain':domain_name}, {'$inc':{hits:1}},{'upsert':true});
+  } else{
+      console.log('Error while performing Query.'+err);
+  }
+  });
+  console.log("Updated STATS!!");
+  });
 
 }
 
@@ -100,9 +93,9 @@ function validateUrl(url){
       console.log("Please input the URL in the format:\"https:\/\/IpAddress\/<code>\"");
       return -1;
     }
- }
+}
 
-app.get('/hits/:keys', function(req, res) {
+app.get('v1/hits/:keys', function(req, res) {
   console.log("Get hits"+req.params.keys);
     MongoClient.connect("mongodb://localhost:27017/stats", function(err, db) {
     var collection = db.collection('webstats_hits');
@@ -113,56 +106,21 @@ app.get('/hits/:keys', function(req, res) {
 })
 
 
-app.get('/sources', function(req, res) {
-  var cnt;
-  var sources = req.query.source;
-  var keys = req.query.keys;
-    console.log("Get source hits:"+keys+" "+sources);
-
-    MongoClient.connect("mongodb://localhost:27017/stats", function(err, db) {
-    if(err){
-      console.log("error is"+err);
-    }
-    var collection = db.collection('webstats_source');
-     collection.count({key:keys,source:sources},function(err, c) {
-        cnt = c;
-               console.log("Countis"+c);
-               response = {
-               count:cnt
-               };
-        res.send(JSON.stringify(response));
-
-     });
-  });
-       
-})
-
-
-app.get('/locations', function(req, res) {
-  var cnt;
-  var location = req.query.location;
-  var keys = req.query.keys;
-    console.log("Get source hits:"+keys+" "+location);
-
+app.get('/v1/domain/:domain', function(req, res) {
+  var domain_name = req.params.domain;
+  console.log("Get domain hits for : "+ domain_name);
   MongoClient.connect("mongodb://localhost:27017/stats", function(err, db) {
-    if(err){
+  if(err){
       console.log("error is"+err);
     }
-    var collection = db.collection('webstats_location');
-     collection.count({key:keys,location:location},function(err, c) {
-        cnt = c;
-               console.log("Count is"+c);
-               response = {
-               count:cnt
-               };
-        res.send(JSON.stringify(response));
-
-     });
-  });      
+   var collection = db.collection('webstats_domain');
+   collection.findOne({domain:req.params.domain},{},function(e,docs){
+           res.send(docs);
+      });
+});
 })
 
 app.get('/v1/:code', function (req, res) {
-
   var shorturl = req.params.code;
     expand(shorturl);
     setTimeout(function(){
@@ -181,11 +139,7 @@ app.get('/v1/:code', function (req, res) {
 })
 
   var server = app.listen(8082, function () {
-
-  var host = server.address().address
-  var port = server.address().port
-
-  console.log("App listening at http://%s:%s", host, port)
-
-  
-})
+    var host = server.address().address
+    var port = server.address().port
+    console.log("App listening at http://%s:%s", host, port)
+  });
