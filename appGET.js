@@ -16,7 +16,7 @@ client.on('connect', function() {
 });
 
 
-amqp.connect('amqp://54.183.8.230', function(err, conn) {
+amqp.connect('amqp://54.183.8.230:5672/', function(err, conn) {
   conn.createChannel(function(err, ch) {
   var q = 'shortner';
 
