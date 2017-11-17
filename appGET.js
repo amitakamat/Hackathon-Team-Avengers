@@ -16,7 +16,7 @@ client.on('connect', function() {
 });
 
 
-amqp.connect('amqp://localhost', function(err, conn) {
+amqp.connect('amqp://54.183.8.230:5672/', function(err, conn) {
   conn.createChannel(function(err, ch) {
   var q = 'shortner';
 
@@ -31,7 +31,7 @@ amqp.connect('amqp://localhost', function(err, conn) {
 });
 
 var connection = mysql.createConnection({
-  host     : 'localhost',
+  host     : '54.183.8.230',
   user     : 'root',
   password : 'temp1234',
   database : 'urlshortener'
@@ -61,7 +61,8 @@ console.log("lets check"+shortUrl);
       }
      });
   
- MongoClient.connect("mongodb://localhost:27017/stats", function(err, db) {
+
+  MongoClient.connect("mongodb://admin:admin@281-hackathon-shard-00-00-i3eln.mongodb.net:27017,281-hackathon-shard-00-01-i3eln.mongodb.net:27017,281-hackathon-shard-00-02-i3eln.mongodb.net:27017/test?ssl=true&replicaSet=281-hackathon-shard-0&authSource=admin/stats", function(err, db) {
   if(err) { return console.dir(err); }
   console.log("Updating STATS!!")
   connection.query("SELECT websitename from urlinfo where shorturl='"+shortUrl+"'", function(err, rows, fields) {
@@ -97,7 +98,7 @@ function validateUrl(url){
 
 app.get('v1/hits/:keys', function(req, res) {
   console.log("Get hits"+req.params.keys);
-    MongoClient.connect("mongodb://localhost:27017/stats", function(err, db) {
+    MongoClient.connect("mongodb://admin:admin@281-hackathon-shard-00-00-i3eln.mongodb.net:27017,281-hackathon-shard-00-01-i3eln.mongodb.net:27017,281-hackathon-shard-00-02-i3eln.mongodb.net:27017/test?ssl=true&replicaSet=281-hackathon-shard-0&authSource=admin/stats", function(err, db) {
     var collection = db.collection('webstats_hits');
     collection.findOne({key:req.params.keys},{},function(e,docs){
            res.send(docs);
@@ -109,8 +110,8 @@ app.get('v1/hits/:keys', function(req, res) {
 app.get('/v1/domain/:domain', function(req, res) {
   var domain_name = req.params.domain;
   console.log("Get domain hits for : "+ domain_name);
-  MongoClient.connect("mongodb://localhost:27017/stats", function(err, db) {
-  if(err){
+  MongoClient.connect("mongodb://admin:admin@281-hackathon-shard-00-00-i3eln.mongodb.net:27017,281-hackathon-shard-00-01-i3eln.mongodb.net:27017,281-hackathon-shard-00-02-i3eln.mongodb.net:27017/test?ssl=true&replicaSet=281-hackathon-shard-0&authSource=admin/stats", function(err, db) {
+    if(err){
       console.log("error is"+err);
     }
    var collection = db.collection('webstats_domain');
