@@ -9,3 +9,4 @@ Features:
 * RESTful API allows for programmatic creation of shortlinks
 * Separation of database from web server
 
+![Alt Text](https://github.com/amitakamat/Hackathon-Team-Avengers/blob/master/Architecture.jpg)
