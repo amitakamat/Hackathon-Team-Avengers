@@ -96,7 +96,7 @@ function validateUrl(url){
     }
 }
 
-app.get('/v1/:code', function (req, res) {
+app.get('/v1/code/:code', function (req, res) {
   var shorturl = req.params.code;
     expand(shorturl);
     setTimeout(function(){
