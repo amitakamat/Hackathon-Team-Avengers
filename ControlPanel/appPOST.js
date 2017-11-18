@@ -76,7 +76,7 @@ app.post('/v1/shorten', urlencodedParser, function (req, res) {
    console.log(req.body);
    setTimeout(function(){
 	   response = {
-	     shortUrl:"http://localhost:8082/v1/"+shortner(req.body.url)
+	     shortUrl:"http://linked-redirect-elb-13359793.us-west-1.elb.amazonaws.com:8082/v1/"+shortner(req.body.url)
 	   };
 	   console.log(response);
 	   console.log(IdMap);
