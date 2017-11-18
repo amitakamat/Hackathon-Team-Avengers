@@ -129,7 +129,7 @@ app.get('/', function (req, res) {
 })
 
 
-app.get('v1/hits/:keys', function(req, res) {
+app.get('/v1/hits/:keys', function(req, res) {
   console.log("Get hits"+req.params.keys);
    MongoClient.connect("mongodb://haroon:haroon@281-hackathon-shard-00-00-pjkz1.mongodb.net:27017,281-hackathon-shard-00-01-pjkz1.mongodb.net:27017,281-hackathon-shard-00-02-pjkz1.mongodb.net:27017/stats?ssl=true&replicaSet=281-hackathon-shard-0&authSource=admin", function(err, db) {
     //MongoClient.connect("mongodb://localhost:27017/stats", function(err,db) { 
