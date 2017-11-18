@@ -1,2 +1,11 @@
 # Hackathon-Team-Avengers
-Bit-ly like app to shorten URL for cmpe 281 - Team Avengers
+# URL Shortener in Node.js
+
+Features:
+
+Custom shortlinks
+Logging of hits
+GUI for internal creation of shortlinks, and browsing of statistics deployed on Heroku
+RESTful API allows for programmatic creation of shortlinks
+Separation of database from web server
+
