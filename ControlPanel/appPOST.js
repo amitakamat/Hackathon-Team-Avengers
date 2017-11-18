@@ -88,6 +88,16 @@ app.post('/v1/shorten', urlencodedParser, function (req, res) {
   
 })
 
+app.get('/', function (req, res) {
+   setTimeout(function(){
+           response = {
+             status:"ok"
+           };
+           res.send(JSON.stringify(response));
+          return res.end();
+   }, 400);
+
+})
 var server = app.listen(8081 , function (){
 
   var host = server.address().address

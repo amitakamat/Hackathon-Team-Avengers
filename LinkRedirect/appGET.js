@@ -117,6 +117,16 @@ app.get('/v1/:code', function (req, res) {
 
 
 // Trend server api calls ...
+app.get('/', function (req, res) {
+   setTimeout(function(){
+           response = {
+             status:"ok"
+           };
+           res.send(JSON.stringify(response));
+          return res.end();
+   }, 400);
+
+})
 
 
 app.get('v1/hits/:keys', function(req, res) {
