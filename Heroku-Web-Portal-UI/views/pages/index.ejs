@@ -1,7 +1,7 @@
-
 <!DOCTYPE html>
 <html>
 <head>
+  <% include ../partials/header.ejs %>
 </head>
 
 <body>
@@ -16,17 +16,22 @@
       <div class="form-group">
         <input type="text" name="originalUrl" class="form-control" placeholder="URL to shorten...">
       </div>
-      <button type="submit" class="btn btn-default">Shorten!!</button>
+        <button type="submit" class="btn btn-default">Shorten!!</button>
     </form>
     <div id="success" class="alert alert-success" 
-      <%if (data.noSuccess == 1) { %>
+      <%if (data.noSuccess == 1 && data.isValidURL == 1) { %>
         hidden
-      <% } else{ %>      
+      <% } else if (data.isValidURL == 0) { %>
+        <span>Please enter a valid URL!</span>
+      <% } else { %>      
         <span>Successfully created the shortlink!!! </span><a href="<%= data.tmp %>"><span><b><%= data.tmp %></b></span></a>
       <% } %>
     </div>
-    <a type="button" class="btn btn-lg btn-primary" href="/"> View the Statistics</a>
   </div>
+  <hr>
+  <div><a type="button" class="btn btn-lg btn-primary" href="/stats"> View the Statistics</a></div>
 </div>
+
+
 </body>
 </html>
