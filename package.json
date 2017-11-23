@@ -1,6 +1,6 @@
 {
-  "name": "281team2",
-  "version": "0.0.1",
+  "name": "281teamAvengers",
+  "version": "1",
   "private": true,
   "scripts": {
     "start": "node app"
